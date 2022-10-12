@@ -8,7 +8,7 @@ from airflow.operators.python_operator import PythonOperator
 import pandas as pd
 
 def csvToJson():
-    df=pd.read_csv('/home/paulcrickard/data.csv')
+    df=pd.read_csv('/home/raka/data.csv')
     for i,r in df.iterrows():
         print(r['name'])
     df.to_json('fromAirflow.json',orient='records')
@@ -17,7 +17,7 @@ def csvToJson():
 
 
 default_args = {
-    'owner': 'paulcrickard',
+    'owner': 'raka',
     'start_date': dt.datetime(2020, 3, 18),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=5),
