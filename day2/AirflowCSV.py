@@ -11,10 +11,7 @@ def csvToJson():
     df=pd.read_csv('/home/raka/data.csv')
     for i,r in df.iterrows():
         print(r['name'])
-    df.to_json('fromAirflow.json',orient='records')
-
-	
-
+    df.to_json('fromAirflow.json', orient='records')
 
 default_args = {
     'owner': 'raka',
