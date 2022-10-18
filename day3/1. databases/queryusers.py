@@ -1,5 +1,5 @@
 import psycopg2 as db
-conn_string="dbname='hacktiv8' host='localhost' user='postgres' password='postgres'"
+conn_string="dbname='hacktiv8' host='localhost' user='postgres' password='rinintha'"
 conn=db.connect(conn_string)
 cur=conn.cursor()
 query = "select * from users"

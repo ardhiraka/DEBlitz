@@ -1,5 +1,5 @@
 import urllib
-import urllib2
+from urllib.request import urlopen
 import json
 import java.io
 from org.apache.commons.io import IOUtils
@@ -14,7 +14,7 @@ class ModJSON(StreamCallback):
     try:
         param = {'place_url':'bernalillo-county','per_page':'100'}
         url = 'https://seeclickfix.com/api/v2/issues?' + urllib.urlencode(param)
-        rawreply = urllib2.urlopen(url).read()
+        rawreply = urlopen(url).read()
         reply = json.loads(rawreply)
 
         outputStream.write(bytearray(json.dumps(reply, indent=4).encode('utf-8')))

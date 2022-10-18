@@ -13,7 +13,7 @@ print(res)
 
 
 
-doc={"query":{"match":{"_id":"pDYlOHEBxMEH3Xr-2QPk"}}}
+doc={"query":{"match":{"_id":"fuIQ6oMBzXK1GeZ_VCpP"}}}
 res=es.search(index="users",body=doc,size=10)
 print(res)
 
