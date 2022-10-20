@@ -7,12 +7,6 @@ from airflow.operators.python_operator import PythonOperator
 
 import pandas as pd
 
-
-
-
-
-
-
 def cleanScooter():
     df=pd.read_csv('scooter.csv')
     df.drop(columns=['region_id'], inplace=True)
@@ -49,7 +43,7 @@ with DAG('CleanData',
                                  python_callable=filterData)
 
     moveFile = BashOperator(task_id='move',
-                                 bash_command='mv /home/raka/may23-june3.csv /home/raka/Desktop')
+                                 bash_command='mv /home/raka/may23-june3.csv /home/raka')
 
 
 
