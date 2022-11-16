@@ -29,7 +29,7 @@ def receipt(err,msg):
         
 
 def main():
-    for i in range(10):
+    for i in range(100):
         data={
            'user_id': fake.random_int(min=20000, max=100000),
            'user_name':fake.name(),
