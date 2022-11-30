@@ -20,7 +20,7 @@ default_args= {
 }
 
 with DAG(
-    "ml_pipeline",
+    "H8_ml_pipeline",
     description='H8 End-to-end ML pipeline',
     schedule_interval='@daily',
     default_args=default_args, 
