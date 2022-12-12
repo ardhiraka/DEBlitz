@@ -7,7 +7,7 @@ es = Elasticsearch("http://localhost:9200") #or pi {127.0.0.1}
 
 res = es.search(
   index = 'users',
-  doc_type = 'doc',
+  doc_type = '_doc',
   scroll = '20m',
   size = 500,
   body = {"query":{"match_all":{}}}
