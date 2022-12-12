@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 
 
 
-es = Elasticsearch() 
+es = Elasticsearch("http://localhost:9200") #or pi {127.0.0.1}
 
 
 res = es.search(
