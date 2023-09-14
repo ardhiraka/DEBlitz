@@ -8,14 +8,14 @@ for r in range(1000):
     i+=1
 data_for_db=tuple(data)
 print(data_for_db)
-conn_string="dbname='hacktiv8' host='localhost' user='postgres' password='rinintha'"
+conn_string="dbname='postgres' host='localhost' user='postgres' password='rinintha'"
 conn=db.connect(conn_string)
 cur=conn.cursor()
-query = "insert into users (id,name,street,city,zip) values(%s,%s,%s,%s,%s)"
+query = "insert into people (id,name,street,city,zip) values(%s,%s,%s,%s,%s)"
 print(cur.mogrify(query,data_for_db[1]))
 cur.executemany(query,data_for_db)
 conn.commit()
-query2 = "select * from users"
+query2 = "select * from people"
 
 cur.execute(query2)
 print(cur.fetchall())

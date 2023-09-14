@@ -1,0 +1,65 @@
+version: "3"
+services:
+    # configuration manager for NiFi
+    zookeeper:
+        hostname: myzookeeper
+        container_name: zookeeper_container_persistent
+        image: 'bitnami/zookeeper:3.7.0'  # latest image as of 2021-11-09.
+        restart: on-failure
+        environment:
+            - ALLOW_ANONYMOUS_LOGIN=yes
+        networks:
+            - my_persistent_network
+# version control for nifi flows
+    registry:
+        hostname: myregistry
+        container_name: registry_container_persistent
+        image: 'apache/nifi-registry:1.15.0'  # latest image as of 2021-11-09.
+        restart: on-failure
+        ports:
+            - "18080:18080"
+        environment:
+            - LOG_LEVEL=INFO
+            - NIFI_REGISTRY_DB_DIR=/opt/nifi-registry/nifi-registry-current/database
+            - NIFI_REGISTRY_FLOW_PROVIDER=file
+            - NIFI_REGISTRY_FLOW_STORAGE_DIR=/opt/nifi-registry/nifi-registry-current/flow_storage
+        volumes:
+            - ./nifi_registry/database:/opt/nifi-registry/nifi-registry-current/database
+            - ./nifi_registry/flow_storage:/opt/nifi-registry/nifi-registry-current/flow_storage
+        networks:
+            - my_persistent_network
+# data extraction, transformation and load service
+    nifi:
+        hostname: mynifi
+        container_name: nifi_container_persistent
+        image: 'apache/nifi:1.14.0'  # latest image as of 2021-11-09.
+        restart: on-failure
+        ports:
+            - '8091:8080'
+        environment:
+            - NIFI_WEB_HTTP_PORT=8080
+            - NIFI_CLUSTER_IS_NODE=true
+            - NIFI_CLUSTER_NODE_PROTOCOL_PORT=8082
+            - NIFI_ZK_CONNECT_STRING=myzookeeper:2181
+            - NIFI_ELECTION_MAX_WAIT=30 sec
+            - NIFI_SENSITIVE_PROPS_KEY='12345678901234567890A'
+        healthcheck:
+            test: "${DOCKER_HEALTHCHECK_TEST:-curl localhost:8091/nifi/}"
+            interval: "60s"
+            timeout: "3s"
+            start_period: "5s"
+            retries: 5
+        volumes:
+            - ./nifi/database_repository:/opt/nifi/nifi-current/database_repository
+            - ./nifi/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+            - ./nifi/content_repository:/opt/nifi/nifi-current/content_repository
+            - ./nifi/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+            - ./nifi/state:/opt/nifi/nifi-current/state
+            - ./nifi/logs:/opt/nifi/nifi-current/logs
+            # uncomment the next line after copying the /conf directory from the container to your local directory to persist NiFi flows
+            #- ./nifi/conf:/opt/nifi/nifi-current/conf
+        networks:
+            - my_persistent_network
+networks:
+  my_persistent_network:
+    driver: bridge
