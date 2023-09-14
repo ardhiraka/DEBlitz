@@ -9,7 +9,7 @@ res = es.search(
   index = 'users',
   doc_type = '_doc',
   scroll = '20m',
-  size = 500,
+  size = 10,
   body = {"query":{"match_all":{}}}
 )
 for search_doc in res['hits']['hits']:
